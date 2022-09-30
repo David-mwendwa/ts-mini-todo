@@ -1,9 +1,16 @@
 "use strict";
-var todos = [];
 var btn = document.getElementById('btn');
 var input = document.getElementById('todoinput');
 var form = document.querySelector('form');
 var list = document.getElementById('todolist');
+var todos = readTodos();
+todos.forEach(createTodo);
+function readTodos() {
+    var todosJSON = localStorage.getItem('todos');
+    if (todosJSON === null)
+        return [];
+    return JSON.parse(todosJSON);
+}
 function handleSumbit(e) {
     e.preventDefault();
     var newTodo = {
@@ -12,6 +19,7 @@ function handleSumbit(e) {
     };
     createTodo(newTodo);
     todos.push(newTodo);
+    localStorage.setItem('todos', JSON.stringify(todos));
     input.value = '';
 }
 function createTodo(todo) {
